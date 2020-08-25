@@ -1,3 +1,6 @@
+//Edgar Adrian Garcia Villegas 
+//A01021730
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -66,10 +69,10 @@ void recorre(void * vector, int n, int len)
     }
 }
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char * argv[]) { 
     
-    char * arreglo = "PAOLA GARCIA";
-    recorre(arreglo, 1, 15);
+    char * arreglo = "ESTA FRASE ES PEGAJOSA";
+    recorre(arreglo, 1, 22);
     
     return 0;
 }
