@@ -1,79 +1,93 @@
 //Edgar Adrian Garcia Villegas 
 //A01021730
-
 #include <stdio.h>
 #include <stdlib.h>
 
-struct  Libro {
-    
+
+typedef struct  Libro {
     char * titulo;
     int paginas;
-    
-};
-struct Libro * libros;
+} Libro;
 
-typedef void (*t_direction)(void *, size_t, int);
+typedef void (*t_imprime)(void*);
+typedef void  (*t_iterator)(void*, size_t,t_imprime);
 
-void* begin(void* vector){
-    return vector;
+
+void* begin(void* datos){
+    return datos;
 }
 
-void* next(void* vector, size_t size){
-    return (vector+size);
+void* next(void* datos, size_t size){
+    return (datos+size);
 }
 
-void* prev(void* vector, size_t size){
-    return (vector-size);
+void* prev(void* datos, size_t size){
+    return (datos-size);
 }
 
-void* end(void* vector,size_t size, int len){
-    return (vector+(size*len));
+void* end(void* datos,size_t size, int len){
+    return (datos+(size*len));
 }
 
-void print(char* elem)
+void forwardIt(void* datos, size_t size, int len, t_imprime imprime)
 {
-    printf("%c \n",*elem);
-}
-
-void forward(void * vector, size_t size, int len)
-{
-    void* aux = begin(vector);
-    while(aux != end(vector,size,len)){
-        print(aux);
-        aux = next(aux,size);
-    }
-    
-}
-
-void backward(void * vector, size_t size, int len)
-{
-    void* aux = end(vector, size, len);
-    while(aux != begin(vector)){
-        print(aux);
-        aux = prev(aux,size);
+    void* temp = begin(datos);
+    while(temp != end(datos,size,len)){
+        imprime(temp);
+        temp = next(temp,size);
     }
 }
 
-void iterate(t_direction option, void * vector, size_t size, int len)
+void prevIt(void* datos, size_t size, int len, t_imprime imprime)
 {
-    (*option)(vector, size, len);
-}
-
-void recorre(void * vector, int n, int len)
-{
-    if(n == 0)
-    {
-        iterate(forward, vector, sizeof(*vector),len);
-    } else if (n == 1) {
-        iterate(backward, vector, sizeof(*vector),len);
+    void* temp = end(datos,size,len);
+    while(temp != begin(datos)){
+        imprime(temp);
+        temp = prev(temp,size);
     }
 }
 
-int main(int argc, const char * argv[]) { 
-    
-    char * arreglo = "ESTA FRASE ES PEGAJOSA";
-    recorre(arreglo, 1, 22);
-    
-    return 0;
+void bidIt(void* datos, size_t size, int len, t_imprime imprime)
+{
+    void* b = begin(datos);
+    void* temp;
+    if (datos = b){
+        temp = begin(datos);
+        while(temp != end(datos,size,len)){
+            imprime(temp);
+            temp = next(temp,size);
+        }
+    }
+    else{
+        temp = end(datos,size,len);
+        while(temp != begin(datos)){
+            imprime(temp);
+            temp = prev(temp,size);
+        }
+    }
 }
 
+void imprimeChar(char* dato)
+{
+    printf("%c",*dato);
+}
+
+void imprimeLibro(Libro* libro)
+{
+    printf("%c\n",libro->titulo);
+}
+
+int main(int argc, const char * argv[])
+{
+    char* datos = "Hola q ace";
+    forwardIt(datos,sizeof(char),10,&imprimeChar);
+    printf("\n");
+    prevIt(datos,sizeof(char),10,&imprimeChar);
+    printf("\n");
+
+    Libro* libros = (Libro*) malloc(3*sizeof(Libro));
+    libros->titulo = "hOLI";
+    (libros+1)->titulo = "hOLI2";
+    (libros+2)->titulo = "hOLI3";
+    bidIt(datos,sizeof(Libro),3,&imprimeLibro);
+}
