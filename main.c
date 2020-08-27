@@ -79,7 +79,7 @@ void imprimeLibro(Libro* libro)
 
 int main(int argc, const char * argv[])
 {
-    char* datos = "Hola q ace";
+    char* datos = "El principito ";
     forwardIt(datos,sizeof(char),10,&imprimeChar);
     printf("\n");
     prevIt(datos,sizeof(char),10,&imprimeChar);
